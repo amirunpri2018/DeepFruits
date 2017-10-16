@@ -19,7 +19,7 @@ interface Classifier {
     /**
      * An immutable result returned by a Classifier describing what was recognized.
      */
-    data class Recognition(val id: String, val title: String, val confidence: Float?, val location: RectF) {
+    data class Recognition(val id: String, val title: String, val confidence: Float?, val location: RectF?) {
 
 
         override fun toString(): String {
