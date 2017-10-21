@@ -27,23 +27,27 @@ class TensorFlowImageClassifier(val inputName: String, val outputName: String,
     private val THRESHOLD = 0.1f
 
     private val TAG = "TensorFlowImageClassifier"
-    private val logStats = false
+    private var logStats = false
 
     // Pre-allocated buffers.
     private val labels = ArrayList<String>()
-    private val intValues: ArrayList<Int> = ArrayList(inputSize * inputSize)
-    private val floatValues: ArrayList<Float> = ArrayList(inputSize * inputSize * 3)
+    private lateinit var intValues: IntArray
+    private lateinit var floatValues: FloatArray
     private val outputs: ArrayList<Float> = ArrayList(numClasses)
     private val outputNames: ArrayList<String> = ArrayList()
 
     override fun recognizeImage(bitmap: Bitmap): List<Classifier.Recognition> {
+        outputNames.add(outputName)
         Trace.beginSection("recognizeImage")
 
         Trace.beginSection("preprocessBitmap")
 
         // Preprocess the image data from 0-255 int to normalized float based
         // on the provided parameters.
-        bitmap.getPixels(intValues.toIntArray(), 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+        intValues = kotlin.IntArray(bitmap.width * bitmap.height)
+        floatValues = FloatArray(bitmap.width * bitmap.height * 3)
+        bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+
 
         for ((index, value) in intValues.withIndex()) {
             floatValues[index * 3 + 0] = ((value shr 16 and 0xFF) - imageMean) / imageStd
@@ -55,7 +59,7 @@ class TensorFlowImageClassifier(val inputName: String, val outputName: String,
 
         // Copy the input data into TensorFlow.
         Trace.beginSection("feed")
-        tensorFlowInferenceInterface.feed(inputName, floatValues.toFloatArray(), 1, inputSize.toLong(), inputSize.toLong(), 3)
+        tensorFlowInferenceInterface.feed(inputName, floatValues, 1, inputSize.toLong(), inputSize.toLong(), 3)
         Trace.endSection()
 
         // Run the inference call.
@@ -99,15 +103,14 @@ class TensorFlowImageClassifier(val inputName: String, val outputName: String,
     }
 
     override fun enableStatLogging(debug: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.logStats = debug
+
     }
 
-    override fun getStatString(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getStatString(): String = tensorFlowInferenceInterface.statString
 
     override fun close() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        tensorFlowInferenceInterface.close()
     }
 
     companion object {
