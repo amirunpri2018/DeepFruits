@@ -1,4 +1,5 @@
-package com.nullpointerbay.deepfruits
+package com.nullpointerbay.deepfruits.camera
+
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,14 +7,10 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import com.nullpointerbay.deepfruits.recognizer.Classifier.Recognition
+import com.nullpointerbay.deepfruits.recognizer.Classifier
 
-
-/**
- * Created by rafal.wachol on 21/10/2017.
- */
-class RecognitionScoreView(context: Context, set: AttributeSet) : View(context, set) {
-    private var results: List<Recognition>? = null
+class RecognitionScoreView(context: Context, set: AttributeSet) : View(context, set), ResultsView {
+    private var results: List<Classifier.Recognition>? = null
     private val textSizePx: Float
     private val fgPaint: Paint
     private val bgPaint: Paint
@@ -29,20 +26,20 @@ class RecognitionScoreView(context: Context, set: AttributeSet) : View(context, 
         bgPaint.color = -0x33bd7a0c
     }
 
-    fun setResults(results: List<Recognition>) {
+    override fun setResults(results: List<Classifier.Recognition>) {
         this.results = results
         postInvalidate()
     }
 
-    override fun onDraw(canvas: Canvas) {
+    public override fun onDraw(canvas: Canvas) {
         val x = 10
         var y = (fgPaint.textSize * 1.5f).toInt()
 
         canvas.drawPaint(bgPaint)
 
         if (results != null) {
-            for ((_, title, confidence) in results!!) {
-                canvas.drawText(title + ": " + confidence, x.toFloat(), y.toFloat(), fgPaint)
+            for (recog in results!!) {
+                canvas.drawText(recog.title + ": " + recog.confidence, x.toFloat(), y.toFloat(), fgPaint)
                 y += (fgPaint.textSize * 1.5f).toInt()
             }
         }

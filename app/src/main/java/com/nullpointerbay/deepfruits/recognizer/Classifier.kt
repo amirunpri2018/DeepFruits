@@ -1,4 +1,4 @@
-package com.nullpointerbay.deepfruits
+package com.nullpointerbay.deepfruits.recognizer
 
 import android.graphics.Bitmap
 import android.graphics.RectF
