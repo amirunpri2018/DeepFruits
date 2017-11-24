@@ -3,9 +3,11 @@
     package="com.nullpointerbay.deepfruits">
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +26,7 @@
 
         <activity android:name=".camera.CameraActivity" />
 
-        <activity android:name=".camera.SampleActivity" />
+        <activity android:name=".tensor.ClassifierActivity" />
 
     </application>
 

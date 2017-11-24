@@ -3,4 +3,13 @@
     <string name="description_info">Info</string>
     <string name="request_permission">This sample needs camera permission.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+
+
+    <string name="picture">Picture</string>
+    <string name="permission_request">No permissions</string>
+    <string name="stop">Stop</string>
+    <string name="record">Record</string>
+    <string name="intro_message">Hello</string>
+
+
 </resources>

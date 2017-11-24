@@ -5,10 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.widget.Button
-import com.nullpointerbay.deepfruits.camera.CameraActivity
 import com.nullpointerbay.deepfruits.recognizer.Classifier
 import com.nullpointerbay.deepfruits.recognizer.TensorFlowImageClassifier
+import com.nullpointerbay.deepfruits.tensor.ClassifierActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,12 +30,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        title = "Deep fruits"
+
         recognitionScoreView = findViewById(R.id.recognition_view)
         val btnClassify = findViewById<Button>(R.id.btn_classify)
         btnClassify.setOnClickListener {
             //            classifySampleImage()
 
-            val intent = Intent(this, CameraActivity::class.java)
+            val intent = Intent(this, ClassifierActivity::class.java)
             startActivity(intent)
 
         }
